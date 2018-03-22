@@ -1,6 +1,27 @@
 language: c
 compiler:
-  - gcc
-  - clang
+- gcc
+- clang
+sudo: true
+dist: trusty
+
+env:
+  global:
+    secure: UYQpgax1BaiipEWrRNifzw53SSzai9Uqx5mS/pR8Otjtt72tUG+VQi1UyKeolw0uYOFq3l8bWPYJ//B+t3RCHwjRqivHLw2yjAmoZE4Vr5ht3nVw6Urxi+3I/xczr0Lv1eQNjKFrRGygl8b26hBbtWe3x4dXY2wwCZ2D3MNLIAM6FCEEkg0po3rTxwzSrs2qfEGfWokxKnf/atAgcLRc+Ct7Tfq21VYsOHtHO3gVN1GoD2FLTxOsFE6guYh5/Z7WhjQ+j2RbWEIi4JN+L3MfXvjxoo41XdJfqijSk/RoGGdukWlQyH87rLY2wf6Bi+NGPwMJUwBkn/m1ue4c2eOnR1BplyuyF64JO7mOX6YlmNYpuIn2DBAiyNc1zloPEyGEJ1V/gOKpW7b9MRhivAR/u4vZzNn5En2Q5oV9fxUleZ2uTt17dBfIl3dioK57oDpl7zYXCi+rXO6fEYdknYF4LjenEqjFt1xMCXDLaC6bH7Mj4cIzaeGqmlmznA5YbwLoAw+7EDpePuSg5LNLKDWKq6bt8/oC+VcwGzngqUEX97lq06OVwqVArqW8oAR1Y68B9xo1PiYY+MN6T7iBN4/8/fPiB/C4eVV70tfmNGvvsPha0JeNMNlNJqKR+mH4FpfflS0W6+Ke9kkrHp0J7rc7s9340AS22weSP3I/NKZ4B0s=
+
+before_install:
+- echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END
+  CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+addons:
+  coverity_scan:
+    project:
+      name: PeterHuewe/eltt2
+      description: ELTT2
+    notification_email: peterhuewe@gmx.de
+    build_command_prepend: make clean
+    build_command: make
+    branch_pattern: master 
 
 script: make && ./eltt2 -h
+
